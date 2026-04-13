@@ -137,6 +137,8 @@ git push -u origin main
 ```
 
 Then set repository visibility to **Public** in GitHub settings.
+DEMO:
+<img width="1771" height="902" alt="image" src="https://github.com/user-attachments/assets/fb131428-fc15-469b-af77-2a41822fe121" />
 
 ## License
 
