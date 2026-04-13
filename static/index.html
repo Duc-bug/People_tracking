@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People Tracking Dashboard</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+      .container {
+        max-width: 1080px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      img {
+        width: 100%;
+        border: 1px solid #334155;
+        border-radius: 8px;
+      }
+      pre {
+        margin-top: 16px;
+        padding: 12px;
+        background: #111827;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Real-time People Tracking</h2>
+      <img src="/video_feed" alt="video stream" />
+      <pre id="telemetry">Waiting telemetry...</pre>
+    </div>
+
+    <script>
+      const telemetryNode = document.getElementById("telemetry");
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+      const socket = new WebSocket(`${protocol}://${window.location.host}/ws/telemetry`);
+
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          telemetryNode.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          telemetryNode.textContent = `Telemetry parse error: ${String(err)}`;
+        }
+      };
+
+      socket.onerror = () => {
+        telemetryNode.textContent = "WebSocket error.";
+      };
+    </script>
+  </body>
+</html>
